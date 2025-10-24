@@ -1,0 +1,159 @@
+using Cysharp.Threading.Tasks;
+using NUnit.Framework;
+using System.Numerics;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class LoginUI : MonoBehaviour
+{
+    public Button loginButton;
+    public Button authButton;
+    public Button anonymousButton;
+    public Button profileButton;
+
+    public TMP_InputField emailField;
+    public TMP_InputField passwordField;
+
+    private string email;
+    private string password;
+
+    public TextMeshProUGUI errorText;
+    public TextMeshProUGUI profileText;
+
+    public GameObject loginPanlel;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private async UniTaskVoid Start()
+    {
+        SetButtonsInteractable(false);
+
+        await UniTask.WaitUntil(() => AuthManager.Instance != null && AuthManager.Instance.IsInitialized);
+
+        SetButtonsInteractable(true);
+
+        loginButton.onClick.AddListener(() => OnEmailLoginClicked().Forget());
+        authButton.onClick.AddListener(() => OnCreateAuthClicked().Forget());
+        anonymousButton.onClick.AddListener(() => OnGuestLoginClicked().Forget());
+        profileButton.onClick.AddListener(() =>
+        {
+            AuthManager.Instance.SignOut();
+            UpdateUI().Forget();
+        });
+
+        emailField.onValueChanged.AddListener((str) => email = str);
+        passwordField.onValueChanged.AddListener((str) => password = str);
+
+        UpdateUI().Forget();
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        
+    }
+
+    public async UniTaskVoid UpdateUI()
+    {
+        if (AuthManager.Instance == null || !AuthManager.Instance.IsInitialized)
+            return;
+
+        bool isLoggedIn = AuthManager.Instance.IsLoggedIn;
+        loginPanlel.SetActive(!isLoggedIn);
+
+        if (isLoggedIn)
+        {
+            string userId  = AuthManager.Instance.UserId;
+            profileText.text = userId;
+        }
+        else
+        {
+            profileText.text = string.Empty;
+        }
+
+        errorText.text = string.Empty;
+    }
+
+    private async UniTaskVoid OnEmailLoginClicked()
+    {
+        if (email == null || password == null)
+        {
+            Debug.Log("[Auth] 값들을 입력해주세요");
+            return;
+        }
+
+        SetButtonsInteractable(false);
+
+        AuthManager.Instance.SignOut();
+        var (success, message) = await AuthManager.Instance.SignInwithEmailAsync(email, password);
+        if(success)
+        {
+
+        }
+        else
+        {
+            ShowError(message);
+        }
+
+        SetButtonsInteractable(true);
+        UpdateUI().Forget();
+    }
+
+    private async UniTaskVoid OnCreateAuthClicked()
+    {
+        if (email == null || password == null)
+        {
+            Debug.Log("[Auth] 값들을 입력해주세요");
+            return;
+        }
+
+        SetButtonsInteractable(false);
+
+        var (success, message) = await AuthManager.Instance.CreateUserwithEmailAsync(email, password);
+
+        if (success)
+        {
+
+        }
+        else
+        {
+            ShowError(message);
+        }
+
+        SetButtonsInteractable(true);
+        UpdateUI().Forget();
+    }
+
+    private async UniTaskVoid OnGuestLoginClicked()
+    {
+        SetButtonsInteractable(false);
+
+        AuthManager.Instance.SignOut();
+        var (success, message) = await AuthManager.Instance.SignInAnonymouslyAsync();
+
+        if (success)
+        {
+
+        }
+        else
+        {
+            ShowError(message);
+        }
+
+        SetButtonsInteractable(true);
+        UpdateUI().Forget();
+    }
+
+    private void ShowError(string message)
+    {
+        errorText.text = message;
+        errorText.color = Color.red;
+    }
+
+    private void SetButtonsInteractable(bool interactable)
+    {
+        loginButton.interactable = interactable;
+        authButton.interactable = interactable;
+        anonymousButton.interactable = interactable;
+    }
+}
