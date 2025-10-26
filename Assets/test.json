@@ -1,0 +1,14 @@
+{
+  "users": {
+    "userId1": {
+      "nickname": "플레이어123",
+      "email": "user@example.com",
+      "createdAt": 1234567890
+    },
+	"userId2": {
+      "nickname": "게이머456",
+      "email": "gamer@example.com",
+      "createdAt": 1234567900
+    }
+  }
+}

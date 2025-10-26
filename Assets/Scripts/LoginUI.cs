@@ -22,6 +22,9 @@ public class LoginUI : MonoBehaviour
     public TextMeshProUGUI profileText;
 
     public GameObject loginPanlel;
+    public GameObject profileCreatePanlel;
+    public GameObject profilePanlel;
+    public GameObject nickNameChangePanlel;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private async UniTaskVoid Start()
@@ -32,14 +35,12 @@ public class LoginUI : MonoBehaviour
 
         SetButtonsInteractable(true);
 
+        profileButton.gameObject.SetActive(false);
+
         loginButton.onClick.AddListener(() => OnEmailLoginClicked().Forget());
         authButton.onClick.AddListener(() => OnCreateAuthClicked().Forget());
         anonymousButton.onClick.AddListener(() => OnGuestLoginClicked().Forget());
-        profileButton.onClick.AddListener(() =>
-        {
-            AuthManager.Instance.SignOut();
-            UpdateUI().Forget();
-        });
+        profileButton.onClick.AddListener(() => OnProfileClicked().Forget());
 
         emailField.onValueChanged.AddListener((str) => email = str);
         passwordField.onValueChanged.AddListener((str) => password = str);
@@ -53,6 +54,20 @@ public class LoginUI : MonoBehaviour
         
     }
 
+    private async UniTaskVoid OnProfileClicked()
+    {
+        bool isProfileExist = await ProfileManager.Instance.ProfileExistAsync();
+
+        if (isProfileExist)
+        {
+            profilePanlel.SetActive(true);
+        }
+        else
+        {
+            profileCreatePanlel.SetActive(true);
+        }
+    }
+
     public async UniTaskVoid UpdateUI()
     {
         if (AuthManager.Instance == null || !AuthManager.Instance.IsInitialized)
@@ -61,14 +76,25 @@ public class LoginUI : MonoBehaviour
         bool isLoggedIn = AuthManager.Instance.IsLoggedIn;
         loginPanlel.SetActive(!isLoggedIn);
 
-        if (isLoggedIn)
+        if ((isLoggedIn))
         {
-            string userId  = AuthManager.Instance.UserId;
-            profileText.text = userId;
+
+            bool isProfileExist = await ProfileManager.Instance.ProfileExistAsync();
+            if (isProfileExist)
+            {
+                var result = await ProfileManager.Instance.LoadProfileAsync();
+                //string userId  = AuthManager.Instance.UserId;
+                profileText.text = result.profile.nickname;
+            }
+            else
+            {
+                profileText.text = "ÇÁ·ÎÇÊ";
+            }
+            profileButton.gameObject.SetActive(true);
         }
         else
         {
-            profileText.text = string.Empty;
+
         }
 
         errorText.text = string.Empty;
@@ -84,7 +110,6 @@ public class LoginUI : MonoBehaviour
 
         SetButtonsInteractable(false);
 
-        AuthManager.Instance.SignOut();
         var (success, message) = await AuthManager.Instance.SignInwithEmailAsync(email, password);
         if(success)
         {
@@ -128,7 +153,6 @@ public class LoginUI : MonoBehaviour
     {
         SetButtonsInteractable(false);
 
-        AuthManager.Instance.SignOut();
         var (success, message) = await AuthManager.Instance.SignInAnonymouslyAsync();
 
         if (success)

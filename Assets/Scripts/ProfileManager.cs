@@ -43,14 +43,14 @@ public class ProfileManager : MonoBehaviour
         {
             Debug.Log($"프로필 저장 시도.. {nickname}");
 
-            var profile = new UserProfile(userId, email);
+            var profile = new UserProfile(nickname, email);
             var json = profile.ToJson();
 
             await usersRef.Child(userId).SetRawJsonValueAsync(json).AsUniTask();
 
             cachedProfile = profile;
 
-            Debug.Log($"프로필 성공... {nickname}");
+            Debug.Log($"프로필 저장 성공... {nickname}");
 
             return (true,null);
 
@@ -62,7 +62,7 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
-    public async UniTask<(UserProfile profile, string error)> LoadProfileAsync(string nickname)
+    public async UniTask<(UserProfile profile, string error)> LoadProfileAsync()
     {
         if(!AuthManager.Instance.IsLoggedIn)
         {
@@ -73,7 +73,7 @@ public class ProfileManager : MonoBehaviour
 
         try
         {
-            Debug.Log($"[profile] 프로필 저장 시도.. {nickname}");
+            Debug.Log($"[profile] 프로필 로드 시도...");
             DataSnapshot snapshot = await usersRef.Child(userId).GetValueAsync().AsUniTask();
 
             if (!snapshot.Exists)
@@ -85,7 +85,7 @@ public class ProfileManager : MonoBehaviour
             string json = snapshot.GetRawJsonValue();
             cachedProfile = UserProfile.FromJson(json);
 
-            Debug.Log($"[profile] 프로필 성공... {nickname}");
+            Debug.Log($"[profile] 프로필 로드 성공...");
 
             return (cachedProfile, null);
 
@@ -97,11 +97,11 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
-    public async UniTask<(UserProfile profile, string error)> UpdateNickNameAsync(string newNickName)
+    public async UniTask<(bool success, string error)> UpdateNickNameAsync(string newNickName)
     {
         if(!AuthManager.Instance.IsLoggedIn)
         {
-            return (null, "[Profile] 로그인 X");
+            return (false, "[Profile] 로그인 X");
         }
 
         string userId = AuthManager.Instance.UserId;
@@ -115,12 +115,12 @@ public class ProfileManager : MonoBehaviour
 
             Debug.Log($"[profile] 닉네임 변경 성공... {cachedProfile.nickname}");
 
-            return (cachedProfile, null);
+            return (true, null);
         }
         catch (System.Exception ex)
         {
             Debug.Log($"[profile] 닉네임 변경 실패.. {ex.Message}");
-            return (null, ex.Message);
+            return (false, ex.Message);
         }
     }
 
