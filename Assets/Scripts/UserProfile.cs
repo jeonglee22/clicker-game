@@ -10,7 +10,7 @@ public class UserProfile
 
     public UserProfile()
     {
-
+        this.nickname = "Anonymous";
     }
 
     public UserProfile(string nickname, string email)

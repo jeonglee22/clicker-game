@@ -8,16 +8,15 @@ public class GameStartUI : MonoBehaviour
 
     public GameObject scorePanel;
     public GameObject leaderboardPanel;
+    public GameObject gameStartPanel;
 
     private void Start()
     {
         seeHistoryButton.onClick.AddListener(() =>
         {
-            gameObject.SetActive(false);
             scorePanel.SetActive(true); 
         });
         leaderboardButton.onClick.AddListener(() => {
-            gameObject.SetActive(false);
             leaderboardPanel.SetActive(true); 
         });
     }

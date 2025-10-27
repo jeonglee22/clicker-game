@@ -107,6 +107,7 @@ public class ScoreManager : MonoBehaviour
             if (shouldUpdateBestScore)
             {
                 await UpdateBestScoreAsync(score);
+                await LeaderboardManager.Instance.UpdateLeaderboardAsync(score);
             }
 
             Debug.Log($"[Score] Score Save Success");

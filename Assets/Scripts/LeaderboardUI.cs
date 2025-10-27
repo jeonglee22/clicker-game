@@ -11,9 +11,11 @@ public class LeaderboardUI : MonoBehaviour
     public ScrollRect scoreRect;
     private RectTransform content;
 
-    public TextMeshProUGUI bestScoreText;
+    public TextMeshProUGUI bestPlayerCountText;
 
-    public GameObject scorePrefab;
+    public Toggle liveUpdateToggle;
+
+    public GameObject leaderBoardScorePrefab;
     public GameObject gameStartPanel;
 
     private bool liveUpdate;
@@ -29,7 +31,6 @@ public class LeaderboardUI : MonoBehaviour
         SetButtonsInteractable(false);
 
         await UniTask.WaitUntil(() => AuthManager.Instance != null && AuthManager.Instance.IsInitialized);
-        await FireBaseInitializer.Instance.WaitForInitializationAsync();
 
         SetButtonsInteractable(true);
 
@@ -37,7 +38,6 @@ public class LeaderboardUI : MonoBehaviour
         closeButton.onClick.AddListener(() =>
         {
             gameObject.SetActive(false);
-            gameStartPanel.SetActive(true);
         });
 
         content = scoreRect.content;
@@ -54,6 +54,24 @@ public class LeaderboardUI : MonoBehaviour
         SetButtonsInteractable(false);
 
         DestoryList();
+
+        await LeaderboardManager.Instance.LoadLeaderboardAsync();
+
+        var leaderboardList = LeaderboardManager.Instance.CachedLeaderboard;
+
+        for (int i = 0; i < leaderboardList.Count; i++)
+        {
+            var score = leaderboardList[i].score;
+            var scoreBox = Instantiate(leaderBoardScorePrefab, content);
+            scoreBox.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (i+1).ToString();
+            scoreBox.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = leaderboardList[i].nickname;
+            scoreBox.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = leaderboardList[i].score.ToString();
+
+            scoreBox.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0}점 - {1}", score, leaderboardList[i].GetDateString());
+        }
+
+        bestPlayerCountText.text = string.Format("\t{0}점", LeaderboardManager.Instance.CachedLeaderboard.Count);
+
 
         SetButtonsInteractable(true);
     }

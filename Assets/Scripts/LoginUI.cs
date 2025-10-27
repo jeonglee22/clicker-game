@@ -57,16 +57,18 @@ public class LoginUI : MonoBehaviour
 
     private async UniTaskVoid OnProfileClicked()
     {
-        bool isProfileExist = await ProfileManager.Instance.ProfileExistAsync();
+        profilePanlel.SetActive(true);
 
-        if (isProfileExist)
-        {
-            profilePanlel.SetActive(true);
-        }
-        else
-        {
-            profileCreatePanlel.SetActive(true);
-        }
+        // bool isProfileExist = await ProfileManager.Instance.ProfileExistAsync();
+
+        // if (isProfileExist)
+        // {
+        //     profilePanlel.SetActive(true);
+        // }
+        // else
+        // {
+        //     profileCreatePanlel.SetActive(true);
+        // }
     }
 
     public async UniTaskVoid UpdateUI()
@@ -77,9 +79,8 @@ public class LoginUI : MonoBehaviour
         bool isLoggedIn = AuthManager.Instance.IsLoggedIn;
         loginPanlel.SetActive(!isLoggedIn);
 
-        if ((isLoggedIn))
+        if (isLoggedIn)
         {
-
             bool isProfileExist = await ProfileManager.Instance.ProfileExistAsync();
             if (isProfileExist)
             {
@@ -89,8 +90,29 @@ public class LoginUI : MonoBehaviour
             }
             else
             {
-                profileText.text = "������";
+                var newProfile = await ProfileManager.Instance.SaveProfileAsync("Guest");
+
+                if (newProfile.success)
+                {
+                    profileText.text = "Guest";
+                }
+                else
+                {
+                    Debug.Log(newProfile.error);
+                }
             }
+
+            // bool isProfileExist = await ProfileManager.Instance.ProfileExistAsync();
+            // if (isProfileExist)
+            // {
+            //     var result = await ProfileManager.Instance.LoadProfileAsync();
+            //     //string userId  = AuthManager.Instance.UserId;
+            //     profileText.text = result.profile.nickname;
+            // }
+            // else
+            // {
+            //     profileText.text = "������";
+            // }
             profileButton.gameObject.SetActive(true);
         }
         else
@@ -158,7 +180,7 @@ public class LoginUI : MonoBehaviour
 
         if (success)
         {
-
+            
         }
         else
         {

@@ -16,12 +16,10 @@ public class GameOverUI : MonoBehaviour
     {
         seeHistoryButton.onClick.AddListener(() =>
         {
-            gameObject.SetActive(false);
             scorePanel.SetActive(true); 
         });
         leaderboardButton.onClick.AddListener(() =>
         {
-            gameObject.SetActive(false);
             leaderboardPanel.SetActive(true);
         });
         titleButton.onClick.AddListener(() => {

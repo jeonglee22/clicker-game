@@ -55,6 +55,10 @@ public class ProfileUI : MonoBehaviour
             profileText.text = profile.nickname;
             userIdText.text = AuthManager.Instance.UserId;
         }
+        else
+        {
+            
+        }
     }
 
     private void SetButtonsInteractable(bool interactable)

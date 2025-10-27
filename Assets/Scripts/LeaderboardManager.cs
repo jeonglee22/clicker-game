@@ -58,12 +58,46 @@ public class LeaderboardManager : MonoBehaviour
         Debug.Log("[Leaderboard] Live Update Leaderboard");
     }
 
-    private async UniTask UpdateLeaderboardAsync(int score)
+    public async UniTask UpdateLeaderboardAsync(int score)
     {
-        
+        if (!AuthManager.Instance.IsLoggedIn)
+        {
+            return;
+        }
+
+        var profile = ProfileManager.Instance.CachedProfile;
+        var uid = AuthManager.Instance.UserId;
+
+        try
+        {
+            DataSnapshot snapshot = await leaderboardRef.Child(uid).GetValueAsync().AsUniTask();
+
+            if(snapshot.Exists)
+            {
+                var newScoreData = new Dictionary<string, object>();
+                newScoreData.Add("nickname", profile.nickname);
+                newScoreData.Add("score", score);
+                await leaderboardRef.Child(uid).UpdateChildrenAsync(newScoreData).AsUniTask();
+            }
+            else
+            {
+                DatabaseReference newLeaderBoardRef = leaderboardRef.Push();
+
+                var boardData = new Dictionary<string, object>();
+                boardData.Add("nickname", profile.nickname);
+                boardData.Add("score", score);
+                boardData.Add("timestamp", ServerValue.Timestamp);
+
+                await newLeaderBoardRef.UpdateChildrenAsync(boardData).AsUniTask();
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.Log(ex.Message);
+        }
     }
 
-    private async UniTask<int> LoadLeaderboardAsync(int limit = 10)
+    public async UniTask<int> LoadLeaderboardAsync(int limit = 10)
     {
         if (!AuthManager.Instance.IsLoggedIn)
         {
@@ -90,7 +124,7 @@ public class LeaderboardManager : MonoBehaviour
                 }
             }
 
-            Debug.Log("[Leaderboard] Load Leaderboard Start");
+            Debug.Log("[Leaderboard] Load Leaderboard End");
         }
         catch (System.Exception ex)
         {

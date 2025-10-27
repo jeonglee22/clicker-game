@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Firebase.Database;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
@@ -40,7 +41,6 @@ public class ScoreHistoryUI : MonoBehaviour
         closeButton.onClick.AddListener(() =>
         {
             gameObject.SetActive(false);
-            gameStartPanel.SetActive(true);
         });
 
         content = scoreRect.content;
@@ -52,7 +52,7 @@ public class ScoreHistoryUI : MonoBehaviour
         closeButton.interactable = v;
     }
 
-    private async UniTaskVoid OnReloadHistoryClicked()
+    private async UniTask OnReloadHistoryClicked()
     {
         SetButtonsInteractable(false);
 
@@ -67,7 +67,7 @@ public class ScoreHistoryUI : MonoBehaviour
             scoreBox.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0}점 - {1}", score, data.GetDateString());
         }
 
-        bestScoreText.text = string.Format("{0}점", ScoreManager.Instance.CachedBestScore);
+        bestScoreText.text = string.Format("\t{0}점", ScoreManager.Instance.CachedBestScore);
 
         SetButtonsInteractable(true);
     }

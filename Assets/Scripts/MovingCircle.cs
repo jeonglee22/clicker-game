@@ -33,8 +33,12 @@ public class MovingCircle : MonoBehaviour
         startButton.onClick.AddListener(() =>
         {
             startUI.SetActive(false);
-            
+
             UpdateMove().Forget();
+            timer = 10;
+            currentScore = 0;
+            scoreText.text = "���� : " + currentScore.ToString();
+            timerText.text = "�ð� : " + timer.ToString();
         });
         endButton.onClick.AddListener(() =>
         {

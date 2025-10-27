@@ -1353,7 +1353,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: " 0\uC810"
+  m_text: "\t0\uBA85"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c6f39fce74e96b24d943db19801e4e2a, type: 2}
   m_sharedMaterial: {fileID: 1618764011079545903, guid: c6f39fce74e96b24d943db19801e4e2a, type: 2}
@@ -4066,7 +4066,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516560637}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a7eea9ee7dfba343aec8d288cb293f9, type: 3}
   m_Name: 
@@ -5587,7 +5587,7 @@ MonoBehaviour:
   scoreRect: {fileID: 2044954628}
   bestScoreText: {fileID: 1605076842}
   scorePrefab: {fileID: 1550106149988880247, guid: fbe358098d9200947b176dc9529eb721, type: 3}
-  gameStartPanel: {fileID: 1630754584}
+  gameStartPanel: {fileID: 1292718896}
 --- !u!1 &621257763
 GameObject:
   m_ObjectHideFlags: 0
@@ -10493,7 +10493,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1304087278}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c81294584ce89b48b3c12004a56ef0e, type: 3}
   m_Name: 
@@ -10501,9 +10501,10 @@ MonoBehaviour:
   reloadButton: {fileID: 1675693498}
   closeButton: {fileID: 1215162228}
   scoreRect: {fileID: 1230641570}
-  bestScoreText: {fileID: 0}
-  scorePrefab: {fileID: 0}
-  gameStartPanel: {fileID: 0}
+  bestPlayerCountText: {fileID: 215072399}
+  liveUpdateToggle: {fileID: 500412226}
+  leaderBoardScorePrefab: {fileID: 6761596489992556271, guid: e8f5bea2b2c68e94ca52146e10231b8c, type: 3}
+  gameStartPanel: {fileID: 1292718896}
 --- !u!1 &1312442447
 GameObject:
   m_ObjectHideFlags: 0
@@ -11397,7 +11398,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCD5C\uACE0 \uC810\uC218 :"
+  m_text: "\uCD5C\uACE0 \uAE30\uB85D"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c6f39fce74e96b24d943db19801e4e2a, type: 2}
   m_sharedMaterial: {fileID: 1618764011079545903, guid: c6f39fce74e96b24d943db19801e4e2a, type: 2}
@@ -11533,7 +11534,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAC8C\uC784 \uAE30\uB85D"
+  m_text: "\uB9AC\uB354 \uBCF4\uB4DC"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c6f39fce74e96b24d943db19801e4e2a, type: 2}
   m_sharedMaterial: {fileID: 1618764011079545903, guid: c6f39fce74e96b24d943db19801e4e2a, type: 2}
@@ -13239,6 +13240,7 @@ MonoBehaviour:
   leaderboardButton: {fileID: 1058753550}
   scorePanel: {fileID: 619503384}
   leaderboardPanel: {fileID: 1304087278}
+  gameStartPanel: {fileID: 1292718896}
 --- !u!114 &1630754587
 MonoBehaviour:
   m_ObjectHideFlags: 0
