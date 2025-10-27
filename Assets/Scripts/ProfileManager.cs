@@ -13,6 +13,9 @@ public class ProfileManager : MonoBehaviour
     private UserProfile cachedProfile;
     public UserProfile CachedProfile => cachedProfile;
 
+    private bool isInitialized = false;
+    public bool IsInitialized => isInitialized;
+
     private void Awake()
     {
         if (instance == null)
@@ -27,6 +30,8 @@ public class ProfileManager : MonoBehaviour
         usersRef = dataBaseRef.Child("users");
 
         Debug.Log("[Profile] ProfileManager 초기화 완료");
+
+        isInitialized = true;
     }
 
     public async UniTask<(bool success, string error)> SaveProfileAsync(string nickname)

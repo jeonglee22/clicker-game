@@ -10,6 +10,7 @@ public class GameOverUI : MonoBehaviour
     public GameObject scorePanel;
     public GameObject leaderboardPanel;
     public GameObject gameStartPanel;
+    public GameObject gameOverPanel;
 
     private void Start()
     {
@@ -24,7 +25,7 @@ public class GameOverUI : MonoBehaviour
             leaderboardPanel.SetActive(true);
         });
         titleButton.onClick.AddListener(() => {
-            gameObject.SetActive(false);
+            gameOverPanel.SetActive(false);
             gameStartPanel.SetActive(true); 
         });
     }

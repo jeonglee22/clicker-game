@@ -13257,6 +13257,7 @@ MonoBehaviour:
   scorePanel: {fileID: 619503384}
   leaderboardPanel: {fileID: 1304087278}
   gameStartPanel: {fileID: 1292718896}
+  gameOverPanel: {fileID: 2112084827}
 --- !u!1 &1630890383
 GameObject:
   m_ObjectHideFlags: 0

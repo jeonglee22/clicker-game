@@ -22,6 +22,9 @@ public class ScoreHistoryUI : MonoBehaviour
 
     private void OnEnable()
     {
+        if (AuthManager.Instance == null || !AuthManager.Instance.IsInitialized)
+            return;
+
         OnReloadHistoryClicked().Forget();
     }
 
@@ -30,7 +33,6 @@ public class ScoreHistoryUI : MonoBehaviour
         SetButtonsInteractable(false);
 
         await UniTask.WaitUntil(() => AuthManager.Instance != null && AuthManager.Instance.IsInitialized);
-        await FireBaseInitializer.Instance.WaitForInitializationAsync();
 
         SetButtonsInteractable(true);
 

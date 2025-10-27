@@ -32,7 +32,7 @@ public class LoginUI : MonoBehaviour
         SetButtonsInteractable(false);
 
         await UniTask.WaitUntil(() => AuthManager.Instance != null && AuthManager.Instance.IsInitialized);
-        await FireBaseInitializer.Instance.WaitForInitializationAsync();
+        await UniTask.WaitUntil(() => ProfileManager.Instance != null && ProfileManager.Instance.IsInitialized);
 
         SetButtonsInteractable(true);
 
