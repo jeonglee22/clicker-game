@@ -33,6 +33,7 @@ public class MovingCircle : MonoBehaviour
         startButton.onClick.AddListener(() =>
         {
             startUI.SetActive(false);
+            
             UpdateMove().Forget();
         });
         endButton.onClick.AddListener(() =>
@@ -41,8 +42,8 @@ public class MovingCircle : MonoBehaviour
             UpdateMove().Forget();
             timer = 10;
             currentScore = 0;
-            scoreText.text = "Á¡¼ö : " + currentScore.ToString();
-            timerText.text = "½Ã°£ : " + timer.ToString();
+            scoreText.text = "ï¿½ï¿½ï¿½ï¿½ : " + currentScore.ToString();
+            timerText.text = "ï¿½Ã°ï¿½ : " + timer.ToString();
         });
     }
 
@@ -71,7 +72,7 @@ public class MovingCircle : MonoBehaviour
     {
         if (timer <= 0) return;
         currentScore++;
-        scoreText.text = "Á¡¼ö : " + currentScore.ToString();
+        scoreText.text = "ï¿½ï¿½ï¿½ï¿½ : " + currentScore.ToString();
     }
 
     private async UniTask UpdateMove()
@@ -84,13 +85,15 @@ public class MovingCircle : MonoBehaviour
             MoveCircle();
             await UniTask.Delay(1000);
             timer--;
-            timerText.text = "½Ã°£ : " + timer.ToString();
+            timerText.text = "ï¿½Ã°ï¿½ : " + timer.ToString();
             if (timer <= 0)
             {
                 cancellationTokenSource.Cancel();
-                timerText.text = "½Ã°£ Á¾·á!";
-                finalScoreText.text = "Á¡¼ö : " + currentScore.ToString();
+                timerText.text = "ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½!";
+                finalScoreText.text = "ï¿½ï¿½ï¿½ï¿½ : " + currentScore.ToString();
                 endUI.SetActive(true);
+
+                await ScoreManager.Instance.SaveScoreAsync(currentScore);
             }
         }
     }

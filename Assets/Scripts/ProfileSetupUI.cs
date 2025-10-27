@@ -26,6 +26,7 @@ public class ProfileSetupUI : MonoBehaviour
         profileCreateCloseButton.onClick.AddListener(() => gameObject.SetActive(false));
 
         nickNameCreateField.onValueChanged.AddListener(s => nickNameCreate = s);
+        nickNameCreateField.text = string.Empty;
     }
 
     private async UniTaskVoid OnProfileSetupClicked()

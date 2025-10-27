@@ -32,6 +32,7 @@ public class LoginUI : MonoBehaviour
         SetButtonsInteractable(false);
 
         await UniTask.WaitUntil(() => AuthManager.Instance != null && AuthManager.Instance.IsInitialized);
+        await FireBaseInitializer.Instance.WaitForInitializationAsync();
 
         SetButtonsInteractable(true);
 
@@ -88,7 +89,7 @@ public class LoginUI : MonoBehaviour
             }
             else
             {
-                profileText.text = "ÇÁ·ÎÇÊ";
+                profileText.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
             }
             profileButton.gameObject.SetActive(true);
         }
@@ -104,7 +105,7 @@ public class LoginUI : MonoBehaviour
     {
         if (email == null || password == null)
         {
-            Debug.Log("[Auth] °ªµéÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä");
+            Debug.Log("[Auth] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½");
             return;
         }
 
@@ -128,7 +129,7 @@ public class LoginUI : MonoBehaviour
     {
         if (email == null || password == null)
         {
-            Debug.Log("[Auth] °ªµéÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä");
+            Debug.Log("[Auth] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½");
             return;
         }
 
