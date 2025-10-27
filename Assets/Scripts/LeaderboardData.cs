@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class LeaderboardData : MonoBehaviour
+public class LeaderboardData
 {
     public string nickname;
     public int score;
@@ -13,11 +13,11 @@ public class LeaderboardData : MonoBehaviour
 
     }
 
-    public LeaderboardData(string nickname, int score, long timestamp)
+    public LeaderboardData(string nickname, int score)
     {
         this.nickname = nickname;
         this.score = score;
-        this.timestamp = timestamp;
+        this.timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();;
     }
 
     public DateTime GetDateTime()

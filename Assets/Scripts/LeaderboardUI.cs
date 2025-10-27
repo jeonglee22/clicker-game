@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class LeaderboardUI : MonoBehaviour
@@ -20,10 +22,15 @@ public class LeaderboardUI : MonoBehaviour
 
     private bool liveUpdate;
     private int limitCount = 10;
+    private List<LeaderboardData> leaderboardList;
 
-    private void OnEnable()
+    private async UniTaskVoid OnEnable()
     {
-        OnReloadLeaderboardClicked().Forget();
+        if (AuthManager.Instance == null || !AuthManager.Instance.IsInitialized)
+            return;
+
+        await OnReloadLeaderboardClicked();
+        AddContent();
     }
 
     private async UniTaskVoid Start()
@@ -41,6 +48,26 @@ public class LeaderboardUI : MonoBehaviour
         });
 
         content = scoreRect.content;
+        AddContent();
+        // await OnReloadLeaderboardClicked();
+    }
+
+    private void AddContent()
+    {
+        if (leaderboardList == null) return;
+
+        for (int i = 0; i < leaderboardList.Count; i++)
+        {
+            var score = leaderboardList[i].score;
+            var scoreBox = Instantiate(leaderBoardScorePrefab, content);
+            var texts = scoreBox.GetComponentsInChildren<TextMeshProUGUI>();
+            texts[0].text = (i + 1).ToString();
+            texts[1].text = leaderboardList[i].nickname;
+            texts[2].text = score.ToString();
+        }
+
+        bestPlayerCountText.text = string.Format("\t{0}명", LeaderboardManager.Instance.CachedLeaderboard.Count);
+
     }
 
     private void SetButtonsInteractable(bool v)
@@ -49,7 +76,7 @@ public class LeaderboardUI : MonoBehaviour
         closeButton.interactable = v;
     }
 
-    private async UniTaskVoid OnReloadLeaderboardClicked()
+    private async UniTask OnReloadLeaderboardClicked()
     {
         SetButtonsInteractable(false);
 
@@ -57,21 +84,7 @@ public class LeaderboardUI : MonoBehaviour
 
         await LeaderboardManager.Instance.LoadLeaderboardAsync();
 
-        var leaderboardList = LeaderboardManager.Instance.CachedLeaderboard;
-
-        for (int i = 0; i < leaderboardList.Count; i++)
-        {
-            var score = leaderboardList[i].score;
-            var scoreBox = Instantiate(leaderBoardScorePrefab, content);
-            scoreBox.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = (i+1).ToString();
-            scoreBox.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = leaderboardList[i].nickname;
-            scoreBox.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = leaderboardList[i].score.ToString();
-
-            scoreBox.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0}점 - {1}", score, leaderboardList[i].GetDateString());
-        }
-
-        bestPlayerCountText.text = string.Format("\t{0}점", LeaderboardManager.Instance.CachedLeaderboard.Count);
-
+        leaderboardList = LeaderboardManager.Instance.CachedLeaderboard;
 
         SetButtonsInteractable(true);
     }

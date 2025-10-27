@@ -35,7 +35,7 @@ public class ScoreManager : MonoBehaviour
         await LoadBestScoreAsync();
     }
 
-    private async UniTask<int> LoadBestScoreAsync()
+    public async UniTask<int> LoadBestScoreAsync()
     {
         if (!AuthManager.Instance.IsLoggedIn)
             return 0;
@@ -158,9 +158,11 @@ public class ScoreManager : MonoBehaviour
             Query query = historyRef.OrderByChild("timestamp").LimitToLast(limit);
 
             DataSnapshot snapshot = await query.GetValueAsync().AsUniTask();
+            Debug.Log(snapshot.Exists);
 
             if (snapshot.Exists)
             {
+                Debug.Log(snapshot.ChildrenCount);
                 foreach (DataSnapshot child in snapshot.Children)
                 {
                     string json = child.GetRawJsonValue();

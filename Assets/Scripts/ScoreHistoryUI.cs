@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Firebase.Database;
 using TMPro;
@@ -20,13 +21,16 @@ public class ScoreHistoryUI : MonoBehaviour
     public GameObject gameStartPanel;
 
     private int bestScore;
+    private List<ScoreData> scoreList;
 
-    private void OnEnable()
+    private async UniTaskVoid OnEnable()
     {
         if (AuthManager.Instance == null || !AuthManager.Instance.IsInitialized)
             return;
 
-        OnReloadHistoryClicked().Forget();
+        bestScoreText.text = "\t0점";
+        await OnReloadHistoryClicked();
+        AddContent();
     }
 
     private async UniTaskVoid Start()
@@ -44,6 +48,22 @@ public class ScoreHistoryUI : MonoBehaviour
         });
 
         content = scoreRect.content;
+        AddContent();
+
+        // bestScoreText.text = "\t0점";
+        // await OnReloadHistoryClicked();
+    }
+
+    private void AddContent()
+    {
+        if (scoreList == null) return;
+
+        foreach (var data in scoreList)
+        {
+            var score = data.score;
+            var scoreBox = Instantiate(scorePrefab, content);
+            scoreBox.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0}점 - {1}", score, data.GetDateString());
+        }
     }
 
     private void SetButtonsInteractable(bool v)
@@ -58,14 +78,8 @@ public class ScoreHistoryUI : MonoBehaviour
 
         DestoryList();
 
-        var scoreList = await ScoreManager.Instance.LoadHistoryAsync();
-
-        foreach (var data in scoreList)
-        {
-            var score = data.score;
-            var scoreBox = Instantiate(scorePrefab, content);
-            scoreBox.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0}점 - {1}", score, data.GetDateString());
-        }
+        scoreList = await ScoreManager.Instance.LoadHistoryAsync();
+        Debug.Log(scoreList.Count);
 
         bestScoreText.text = string.Format("\t{0}점", ScoreManager.Instance.CachedBestScore);
 

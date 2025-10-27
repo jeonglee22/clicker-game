@@ -114,6 +114,8 @@ public class LoginUI : MonoBehaviour
             //     profileText.text = "������";
             // }
             profileButton.gameObject.SetActive(true);
+
+            await ScoreManager.Instance.LoadBestScoreAsync();
         }
         else
         {

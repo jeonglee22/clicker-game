@@ -53,6 +53,8 @@ public class LeaderboardManager : MonoBehaviour
             var data = LeaderboardData.FromJson(json);
 
             cachedLeaderboard.Add(data);
+
+            cachedLeaderboard.Reverse();
         }
 
         Debug.Log("[Leaderboard] Live Update Leaderboard");
@@ -70,9 +72,10 @@ public class LeaderboardManager : MonoBehaviour
 
         try
         {
+            Debug.Log("[Leaderboard] Leaderboard update start");
             DataSnapshot snapshot = await leaderboardRef.Child(uid).GetValueAsync().AsUniTask();
 
-            if(snapshot.Exists)
+            if (snapshot.Exists)
             {
                 var newScoreData = new Dictionary<string, object>();
                 newScoreData.Add("nickname", profile.nickname);
@@ -81,15 +84,14 @@ public class LeaderboardManager : MonoBehaviour
             }
             else
             {
-                DatabaseReference newLeaderBoardRef = leaderboardRef.Push();
+                DatabaseReference newLeaderBoardRef = leaderboardRef.Child(uid);
 
-                var boardData = new Dictionary<string, object>();
-                boardData.Add("nickname", profile.nickname);
-                boardData.Add("score", score);
-                boardData.Add("timestamp", ServerValue.Timestamp);
+                var boardData = new LeaderboardData(profile.nickname, score);
+                var json = boardData.ToJson();
 
-                await newLeaderBoardRef.UpdateChildrenAsync(boardData).AsUniTask();
+                await newLeaderBoardRef.SetRawJsonValueAsync(json).AsUniTask();
             }
+            Debug.Log("[Leaderboard] Leaderboard update finish");
         }
         catch (System.Exception ex)
         {
@@ -123,6 +125,8 @@ public class LeaderboardManager : MonoBehaviour
                     cachedLeaderboard.Add(data);
                 }
             }
+
+            cachedLeaderboard.Reverse();
 
             Debug.Log("[Leaderboard] Load Leaderboard End");
         }

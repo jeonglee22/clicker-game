@@ -118,6 +118,8 @@ public class ProfileManager : MonoBehaviour
             await usersRef.Child(userId).Child("nickname").SetValueAsync(newNickName).AsUniTask();
             cachedProfile.nickname = newNickName;
 
+            await LeaderboardManager.Instance.UpdateLeaderboardAsync(ScoreManager.Instance.CachedBestScore);
+
             Debug.Log($"[profile] 닉네임 변경 성공... {cachedProfile.nickname}");
 
             return (true, null);

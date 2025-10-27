@@ -16,6 +16,7 @@ public class ProfileUI : MonoBehaviour
 
     public GameObject loginPanlel;
     public GameObject nickNameChangePanlel;
+    public GameObject gameOverPanel;
 
     private async UniTaskVoid OnEnable()
     {
@@ -82,6 +83,7 @@ public class ProfileUI : MonoBehaviour
         loginPanlel.SetActive(true);
         gameObject.SetActive(false);
         profileButton.gameObject.SetActive(false);
+        gameOverPanel.SetActive(false);
 
         SetButtonsInteractable(true);
     }

@@ -35,11 +35,11 @@ public class AuthManager : MonoBehaviour
 
         if(currentUser != null)
         {
-            Debug.Log($"[Auth] ÀÌ¹Ì ·Î±×ÀÎµÊ : {UserId}");
+            Debug.Log($"[Auth] ï¿½Ì¹ï¿½ ï¿½Î±ï¿½ï¿½Îµï¿½ : {UserId}");
         }
         else
         {
-            Debug.Log($"[Auth] ·Î±×ÀÎÀÌ ÇÊ¿äÇÔ");
+            Debug.Log($"[Auth] ï¿½Î±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½");
         }
 
         isInitialized = true;
@@ -57,18 +57,18 @@ public class AuthManager : MonoBehaviour
     {
         try
         {
-            Debug.Log("[Auth] ÀÍ¸í ·Î±×ÀÎ ½Ãµµ");
+            Debug.Log("[Auth] ï¿½Í¸ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ãµï¿½");
 
             AuthResult result = await auth.SignInAnonymouslyAsync().AsUniTask();
             currentUser = result.User;
 
-            Debug.Log($"[Auth] ÀÍ¸í ·Î±×ÀÎ ¼º°ø : {UserId}");
+            Debug.Log($"[Auth] ï¿½Í¸ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : {UserId}");
 
             return (true, null);
         }
         catch (System.Exception ex)
         {
-            Debug.Log($"[Auth] ÀÍ¸í ·Î±×ÀÎ ½ÇÆÐ : {ex.Message}");
+            Debug.Log($"[Auth] ï¿½Í¸ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : {ex.Message}");
             return (false, ex.Message);
         }
     }
@@ -76,18 +76,18 @@ public class AuthManager : MonoBehaviour
     {
         try
         {
-            Debug.Log("[Auth] È¸¿ø °¡ÀÔ ½Ãµµ");
+            Debug.Log("[Auth] È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ãµï¿½");
 
             AuthResult result = await auth.CreateUserWithEmailAndPasswordAsync(email, password).AsUniTask();
             currentUser = result.User;
 
-            Debug.Log($"[Auth] È¸¿ø °¡ÀÔ ¼º°ø : {UserId}");
+            Debug.Log($"[Auth] È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : {UserId}");
 
             return (true, null);
         }
         catch (System.Exception ex)
         {
-            Debug.Log($"[Auth] È¸¿ø °¡ÀÔ ½ÇÆÐ : {ex.Message}");
+            Debug.Log($"[Auth] È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : {ex.Message}");
             return (false, ex.Message);
         }
     }
@@ -95,18 +95,18 @@ public class AuthManager : MonoBehaviour
     {
         try
         {
-            Debug.Log("[Auth] ·Î±×ÀÎ ½Ãµµ");
+            Debug.Log("[Auth] ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ãµï¿½");
 
             AuthResult result = await auth.SignInWithEmailAndPasswordAsync(email, password).AsUniTask();
             currentUser = result.User;
 
-            Debug.Log($"[Auth] ·Î±×ÀÎ ¼º°ø : {UserId}");
+            Debug.Log($"[Auth] ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : {UserId}");
 
             return (true, null);
         }
         catch (System.Exception ex)
         {
-            Debug.Log($"[Auth] ·Î±×ÀÎ ½ÇÆÐ : {ex.Message}");
+            Debug.Log($"[Auth] ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ : {ex.Message}");
             return (false, ex.Message);
         }
     }
@@ -115,9 +115,10 @@ public class AuthManager : MonoBehaviour
     {
         if (auth != null && currentUser != null)
         {
-            Debug.Log("[Auth] ·Î±×¾Æ¿ô");
+            Debug.Log("[Auth] ï¿½Î±×¾Æ¿ï¿½");
             auth.SignOut();
             currentUser = null;
+            
         }
     }
 
@@ -129,14 +130,14 @@ public class AuthManager : MonoBehaviour
 
             if (!siginIn && currentUser != null)
             { 
-                Debug.Log("[Auth] ·Î±×¾Æ¿ô µÊ");
+                Debug.Log("[Auth] ï¿½Î±×¾Æ¿ï¿½ ï¿½ï¿½");
             }
 
             currentUser = auth.CurrentUser;
 
             if(siginIn)
             {
-                Debug.Log($"[Auth] ·Î±×ÀÎ µÊ : {UserId}");
+                Debug.Log($"[Auth] ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ : {UserId}");
             }
         }
     }
